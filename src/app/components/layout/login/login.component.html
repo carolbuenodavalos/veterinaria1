@@ -1,0 +1,28 @@
+
+<div class="container">
+    <div class="row">
+      <div class="col-md-4 offset-md-4">
+        <div class="card mt-5">
+          <div class="card-body text-center">
+            <h3 class="mb-4">VetSys</h3>
+            <img src="assets/images/logo-vet.png" alt="Logo" class="img-fluid mb-4" width="100">
+  
+            <mdb-form-control>
+              <input [(ngModel)]="login.username" mdbInput type="text" id="username" class="form-control mb-3" />
+              <label mdbLabel class="form-label" for="username">Usuário</label>
+            </mdb-form-control>
+  
+            <mdb-form-control>
+              <input [(ngModel)]="login.password" mdbInput type="password" id="password" 
+                     class="form-control mb-3" (keyup.enter)="logar()" />
+              <label mdbLabel class="form-label" for="password">Senha</label>
+            </mdb-form-control>
+  
+            <button (click)="logar()" class="btn btn-primary btn-block" mdbRipple>
+              Entrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

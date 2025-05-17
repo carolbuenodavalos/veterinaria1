@@ -1,0 +1,60 @@
+<br>
+<div class="container">
+    <div class="row">
+        <div class="col-12 azul">
+            <div class="card">
+                <div class="card-body">
+                    <h3> <i class="fas fa-user-md fa-sm"></i> Cadastro de Médicos</h3><br>
+
+                    <div class="row">
+                        <div class="col-6">
+                            <div class="input-group mb-3">
+                                <input (keyup)="findByNome()" [(ngModel)]="pesquisa" type="text" class="form-control"
+                                    placeholder="Digite parte do nome do médico" aria-label="Nome do médico"
+                                    aria-describedby="button-addon2" />
+                            </div>
+                        </div>
+                        <div class="col-6">
+                            <div class="alinharADireita">
+                                <a (click)="new()" class="btn btn-success btn-rounded" mdbRippled>
+                                    <i class="fas fa-plus fa-sm"></i> Novo
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">ID</th>
+                                <th scope="col">NOME</th>
+                                <th scope="col">CRM</th>
+                                <th scope="col">ESPECIALIDADE</th>
+                                <th scope="col"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (medico of lista; track $index) {
+                            <tr>
+                                <td>{{medico.id}}</td>
+                                <td>{{medico.nome}}</td>
+                                <td>{{medico.numeroCrm}}</td>
+                                <td>{{medico.especialidade}}</td>
+                                <td class="alinharADireita">
+                                    <a (click)="edit(medico)" class="btn btn-primary btn-rounded" mdbRippled>
+                                        <i class="fas fa-pencil fa-sm"></i>
+                                    </a>
+                                    <button (click)="delete(medico)" class="btn btn-danger btn-rounded" mdbRippled>
+                                        <i class="fas fa-trash fa-sm"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
