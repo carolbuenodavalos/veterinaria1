@@ -31,8 +31,19 @@ export class LoginComponent {
       next: token => {
         if(token)
           this.loginService.addToken(token);
-        this.gerarToast().fire({ icon: "success", title: "Seja bem-vindo!" });
-        this.router.navigate(['admin/dashboard']);
+
+        if (this.loginService.hasRole("ROLE_VETERINARIO")) {
+          this.gerarToast().fire({ icon: "success", title: "Seja bem-vindo!" });
+          this.router.navigate(['admin/dashboard']);
+        }
+        else if (this.loginService.hasRole("ADMIN")) {
+          this.gerarToast().fire({ icon: "success", title: "Seja bem-vindo!" });
+          this.router.navigate(['admin/tutores']);
+        }
+        else {
+          Swal.fire('Você não tem permissão para acessar essa página!', '', 'error');
+          this.router.navigate(['login']);
+        }
       },
       error: erro => {
         Swal.fire('Usuário ou senha incorretos!', '', 'error');

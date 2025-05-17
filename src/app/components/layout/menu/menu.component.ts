@@ -2,11 +2,12 @@ import { Component, inject, TemplateRef, ViewChild } from '@angular/core';
 import { MdbCollapseModule } from 'mdb-angular-ui-kit/collapse';
 import { LoginService } from '../../../auth/login.service';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { RouterModule } from '@angular/router';
 
 @Component({
   selector: 'app-menu',
   standalone: true,
-  imports: [MdbCollapseModule],
+  imports: [MdbCollapseModule, RouterModule],
   templateUrl: './menu.component.html',
   styleUrl: './menu.component.scss'
 })

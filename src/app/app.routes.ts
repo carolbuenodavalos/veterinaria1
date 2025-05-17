@@ -13,15 +13,15 @@ import { VacinaListComponent } from './components/entidades/vacina/vacina-list/v
 import { VacinaFormComponent } from './components/entidades/vacina/vacina-form/vacina-form.component';
 import { ConsultaListComponent } from './components/entidades/consulta/consulta-list/consulta-list.component';
 import { ConsultaFormComponent } from './components/entidades/consulta/consulta-form/consulta-form.component';
+import { loginGuard } from './auth/login.guard';
 
 export const routes: Routes = [
     { path: "", redirectTo: "login", pathMatch: 'full' },
     { path: "login", component: LoginComponent },
     { 
         path: "admin", 
-        component: PrincipalComponent, 
-        children: [
-            {path: "dashboard", component: DashboardComponent},
+        component: PrincipalComponent, canActivate:[loginGuard], children: [
+                 { path: "", redirectTo: "dashboard", pathMatch: "full"},            {path: "dashboard", component: DashboardComponent},
             { path: "menu", component: MenuComponent },
             { path: "animais", component: AnimalListComponent },
             { path: "animais/new", component: AnimalFormComponent },
