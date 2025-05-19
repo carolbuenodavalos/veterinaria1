@@ -29,14 +29,16 @@ export class LoginComponent {
 
     this.loginService.logar(this.login).subscribe({
       next: token => {
-        if(token)
-          this.loginService.addToken(token);
+        if (token) this.loginService.addToken(token);
 
+        // BLOQUEIOS IGUAIS AO loginGuard
         if (this.loginService.hasRole("ROLE_VETERINARIO")) {
+          // Veterinário NÃO pode acessar tutores, médicos, cadastrar vacinas, editar tutores
           this.gerarToast().fire({ icon: "success", title: "Seja bem-vindo!" });
           this.router.navigate(['admin/dashboard']);
         }
-        else if (this.loginService.hasRole("ADMIN")) {
+        else if (this.loginService.hasRole("ROLE_ADMIN")) {
+          // Admin NÃO pode acessar consultas
           this.gerarToast().fire({ icon: "success", title: "Seja bem-vindo!" });
           this.router.navigate(['admin/tutores']);
         }

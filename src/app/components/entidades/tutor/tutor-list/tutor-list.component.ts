@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { TutorFormComponent } from '../../../entidades/tutor/tutor-form/tutor-form.component';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import Swal from 'sweetalert2';
+import { LoginService } from '../../../../auth/login.service';
 
 @Component({
   selector: 'app-tutor-list',
@@ -23,6 +24,7 @@ export class TutorListComponent {
   @Input("modoModal") modoModal: boolean = false;
   @Output("meuEvento") meuEvento = new EventEmitter();
   tutorService = inject(TutorService);
+  loginService = inject(LoginService);
   
   @ViewChild("modalTutorForm") modalTutorForm!: TemplateRef<any>;
   modalService = inject(MdbModalService);

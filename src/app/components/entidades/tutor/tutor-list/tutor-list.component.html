@@ -16,9 +16,12 @@
                         </div>
                         <div class="col-6">
                             <div class="alinharADireita">
-                                <a (click)="new()" class="btn btn-success btn-rounded" mdbRippled>
+                                <!-- Botão "Novo" - só ADMIN -->
+                                @if (loginService.hasRole('ROLE_ADMIN')) {
+                                  <a (click)="new()" class="btn btn-success btn-rounded" mdbRippled>
                                     <i class="fas fa-plus fa-sm"></i> Novo
-                                </a>
+                                  </a>
+                                }
                             </div>
                         </div>
                     </div>
@@ -41,12 +44,15 @@
                                 <td>{{tutor.cpf}}</td>
                                 <td>{{tutor.telefone}}</td>
                                 <td class="alinharADireita">
-                                    <a (click)="edit(tutor)" class="btn btn-primary btn-rounded" mdbRippled>
-                                        <i class="fas fa-pencil fa-sm"></i>
-                                    </a>
-                                    <button (click)="delete(tutor)" class="btn btn-danger btn-rounded" mdbRippled>
-                                        <i class="fas fa-trash fa-sm"></i>
-                                    </button>
+                                    <!-- Editar e Excluir - só ADMIN -->
+                                    @if (loginService.hasRole('ROLE_ADMIN')) {
+                                      <a (click)="edit(tutor)" class="btn btn-primary btn-rounded" mdbRippled>
+                                          <i class="fas fa-pencil fa-sm"></i>
+                                      </a>
+                                      <button (click)="delete(tutor)" class="btn btn-danger btn-rounded" mdbRippled>
+                                          <i class="fas fa-trash fa-sm"></i>
+                                      </button>
+                                    }
                                 </td>
                             </tr>
                             }
