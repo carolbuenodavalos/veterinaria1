@@ -2,13 +2,14 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Animal } from '../models/animal';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AnimalService {
   http = inject(HttpClient);
-  API = 'http://localhost:8080/api/animal';
+  API = environment.SERVIDOR+'/api/animal';
 
   constructor() { }
 
@@ -35,5 +36,9 @@ export class AnimalService {
 
   update(animal: Animal, id: number): Observable<string> {
     return this.http.put<string>(this.API + '/update/' + id, animal, { responseType: 'text' as 'json' });
+  }
+
+  count(): Observable<number> {
+    return this.http.get<number>(this.API + '/count');
   }
 }

@@ -21,8 +21,8 @@ export class TutorListComponent {
   tutorEdit!: Tutor;
 
   
-  @Input("modoModal") modoModal: boolean = false;
-  @Output("meuEvento") meuEvento = new EventEmitter();
+  @Input() modoModal = false;
+  @Output() meuEvento = new EventEmitter<Tutor>();
   tutorService = inject(TutorService);
   loginService = inject(LoginService);
   
@@ -97,5 +97,9 @@ export class TutorListComponent {
   meuEventoTratamentoTutor(tutor: Tutor) { // Tipo explícito
     this.animal.tutor = tutor;
     this.modalRef.close();
+  }
+
+  selecionarTutor(tutor: Tutor) {
+    this.meuEvento.emit(tutor);
   }
 }

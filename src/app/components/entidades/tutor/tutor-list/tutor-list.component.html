@@ -17,7 +17,7 @@
                         <div class="col-6">
                             <div class="alinharADireita">
                                 <!-- Botão "Novo" - só ADMIN -->
-                                @if (loginService.hasRole('ROLE_ADMIN')) {
+                                @if(!modoModal && loginService.hasRole('ROLE_ADMIN')) {
                                   <a (click)="new()" class="btn btn-success btn-rounded" mdbRippled>
                                     <i class="fas fa-plus fa-sm"></i> Novo
                                   </a>
@@ -44,15 +44,16 @@
                                 <td>{{tutor.cpf}}</td>
                                 <td>{{tutor.telefone}}</td>
                                 <td class="alinharADireita">
-                                    <!-- Editar e Excluir - só ADMIN -->
-                                    @if (loginService.hasRole('ROLE_ADMIN')) {
-                                      <a (click)="edit(tutor)" class="btn btn-primary btn-rounded" mdbRippled>
-                                          <i class="fas fa-pencil fa-sm"></i>
-                                      </a>
-                                      <button (click)="delete(tutor)" class="btn btn-danger btn-rounded" mdbRippled>
-                                          <i class="fas fa-trash fa-sm"></i>
-                                      </button>
-                                    }
+                                  @if(modoModal) {
+                                    <button class="btn btn-primary btn-sm" (click)="selecionarTutor(tutor)">Selecionar</button>
+                                  } @else if (loginService.hasRole('ROLE_ADMIN')) {
+                                    <a (click)="edit(tutor)" class="btn btn-primary btn-rounded" mdbRippled>
+                                      <i class="fas fa-pencil fa-sm"></i>
+                                    </a>
+                                    <button (click)="delete(tutor)" class="btn btn-danger btn-rounded" mdbRippled>
+                                      <i class="fas fa-trash fa-sm"></i>
+                                    </button>
+                                  }
                                 </td>
                             </tr>
                             }

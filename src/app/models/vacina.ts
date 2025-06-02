@@ -5,6 +5,7 @@ export class Vacina {
     nome!: string;
     dataAplicacao!: Date;
     dataProximaDose!: Date;
+    dataValidade!: Date;
     lote!: string;
     observacoes!: string;
     animais!: Animal[];

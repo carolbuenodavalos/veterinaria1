@@ -2,7 +2,7 @@ import { Component, EventEmitter, inject, Input, Output, TemplateRef, ViewChild 
 import { Vacina } from '../../../../models/vacina';
 import { VacinaService } from '../../../../services/vacina';
 import { FormsModule } from '@angular/forms';
-import { VacinaFormComponent } from '../../../entidades/vacina/vacina-form/vacina-form.component';
+import { VacinaFormComponent } from '../vacina-form/vacina-form.component';
 import { MdbModalModule, MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import Swal from 'sweetalert2';
 import { CommonModule } from '@angular/common';
@@ -12,7 +12,7 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, FormsModule, VacinaFormComponent, MdbModalModule],
   templateUrl: './vacina-list.component.html',
-  styleUrl: './vacina-list.component.scss',
+  styleUrls: ['./vacina-list.component.scss']
 })
 export class VacinaListComponent {
   lista: Vacina[] = [];
@@ -20,8 +20,8 @@ export class VacinaListComponent {
   vacinaEdit!: Vacina;
 
   
-  @Input("modoModal") modoModal: boolean = false;
-  @Output("meuEvento") meuEvento = new EventEmitter();
+  @Input() modoModal = false;
+  @Output() meuEvento = new EventEmitter<Vacina>();
   vacinaService = inject(VacinaService);
   
   @ViewChild("modalVacinaForm") modalVacinaForm!: TemplateRef<any>;
@@ -89,4 +89,9 @@ export class VacinaListComponent {
     this.findAll();
     this.modalRef.close();
   }
+
+  selecionarVacina(vacina: Vacina) {
+    this.meuEvento.emit(vacina);
+  }
+
 }

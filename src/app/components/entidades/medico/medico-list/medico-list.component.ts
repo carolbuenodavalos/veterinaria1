@@ -19,8 +19,8 @@ export class MedicosListComponent {
   medicoEdit!: Medico;
 
   
-  @Input("modoModal") modoModal: boolean = false;
-  @Output("meuEvento") meuEvento = new EventEmitter();
+  @Input() modoModal: boolean = false;
+  @Output() meuEvento = new EventEmitter<Medico>();
   medicoService = inject(MedicoService);
   
   @ViewChild("modalMedicoForm") modalMedicoForm!: TemplateRef<any>;
@@ -85,8 +85,13 @@ export class MedicosListComponent {
     this.modalRef = this.modalService.open(this.modalMedicoForm, { modalClass: 'modal-xl' });
   }
 
-  meuEventoTratamento(mensagem: any) {
-    this.findAll();
+  meuEventoTratamento(medicoSalvo: Medico) {
+    console.log('Médico salvo:', medicoSalvo);
     this.modalRef.close();
+    this.findAll(); // Atualiza a lista, se desejar
+  }
+
+  selecionarMedico(medico: Medico) {
+    this.meuEvento.emit(medico);
   }
 }

@@ -16,9 +16,11 @@
                         </div>
                         <div class="col-6">
                             <div class="alinharADireita">
+                                @if(!modoModal) {
                                 <a (click)="new()" class="btn btn-success btn-rounded" mdbRippled>
                                     <i class="fas fa-plus fa-sm"></i> Novo
                                 </a>
+                                }
                             </div>
                         </div>
                     </div>
@@ -41,12 +43,16 @@
                                 <td>{{animal.especie}}</td>
                                 <td>{{animal.tutor?.nome}}</td>
                                 <td class="alinharADireita">
+                                    @if(modoModal) {
+                                    <button class="btn btn-primary btn-sm" (click)="selecionarAnimal(animal)">Selecionar</button>
+                                    } @else {
                                     <a (click)="edit(animal)" class="btn btn-primary btn-rounded" mdbRippled>
                                         <i class="fas fa-pencil fa-sm"></i>
                                     </a>
                                     <button (click)="delete(animal)" class="btn btn-danger btn-rounded" mdbRippled>
                                         <i class="fas fa-trash fa-sm"></i>
                                     </button>
+                                    }
                                 </td>
                             </tr>
                             }

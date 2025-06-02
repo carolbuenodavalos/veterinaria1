@@ -12,11 +12,12 @@ import { Medico } from '../../../../models/medico';
 import { MedicoService } from '../../../../services/medico';
 import { MedicosListComponent } from '../../medico/medico-list/medico-list.component';
 import { AnimalListComponent } from '../../animal/animal-list/animal-list.component';
+import { NgxMaskDirective } from 'ngx-mask';
 
 @Component({
   selector: 'app-consulta-form',
   standalone: true,
-  imports: [AnimalListComponent, MedicosListComponent, MdbFormsModule, FormsModule],
+  imports: [AnimalListComponent, MedicosListComponent, MdbFormsModule, FormsModule, NgxMaskDirective],
   templateUrl: './consulta-form.component.html',
   styleUrl: './consulta-form.component.scss'
 })
@@ -36,7 +37,10 @@ export class ConsultaFormComponent {
   @ViewChild("modalAnimaisList") modalAnimaisList!: TemplateRef<any>;
   @ViewChild("modalMedicosList") modalMedicosList!: TemplateRef<any>;
   modalService = inject(MdbModalService);
-  modalRef!: MdbModalRef<any>;
+  modalRef!: any; // ou MdbModalRef<any> se estiver usando MDB Angular
+
+  animalSelecionado?: Animal;
+  medicoSelecionado?: Medico;
 
   constructor() {
     let id = this.rotaAtiva.snapshot.params['id'];
@@ -59,6 +63,14 @@ export class ConsultaFormComponent {
   }
 
   save() {
+    // Envie apenas o id dos objetos relacionados
+    if (this.consulta.animal && typeof this.consulta.animal === 'object') {
+      this.consulta.animal = { id: this.consulta.animal.id } as Animal;
+    }
+    if (this.consulta.medico && typeof this.consulta.medico === 'object') {
+      this.consulta.medico = { id: this.consulta.medico.id } as Medico;
+    }
+    console.log('Consulta enviada:', this.consulta); // <-- Adicione aqui
     if (this.consulta.id! > 0) {
       this.consultaService.update(this.consulta, this.consulta.id!).subscribe({
         next: (mensagem) => {
@@ -67,18 +79,18 @@ export class ConsultaFormComponent {
           this.meuEvento.emit("OK");
         },
         error: (erro) => {
-          Swal.fire(erro.error, '', 'error');
+          Swal.fire('Erro ao salvar consulta!', '', 'error');
         }
       });
     } else {
       this.consultaService.save(this.consulta).subscribe({
         next: (mensagem) => {
-          Swal.fire(mensagem, '', 'success');
+          Swal.fire('Consulta salva com sucesso!', '', 'success');
           this.roteador.navigate(['admin/consultas']);
           this.meuEvento.emit("OK");
         },
         error: (erro) => {
-          Swal.fire(erro.error, '', 'error');
+          Swal.fire('Erro ao salvar consulta!', '', 'error');
         }
       });
     }
@@ -118,13 +130,23 @@ export class ConsultaFormComponent {
     this.modalRef = this.modalService.open(this.modalMedicosList, { modalClass: 'modal-xl' });
   }
 
+  abrirModalAnimaisList() {
+    this.modalRef = this.modalService.open(this.modalAnimaisList);
+  }
+
+  abrirModalMedicosList() {
+    this.modalRef = this.modalService.open(this.modalMedicosList);
+  }
+
   meuEventoTratamentoAnimal(animal: Animal) {
+    this.animalSelecionado = animal;
     this.consulta.animal = animal;
     this.modalRef.close();
   }
 
   meuEventoTratamentoMedico(medico: Medico) {
-    this.consulta.medico = medico;
+    this.medicoSelecionado = medico;
+    this.consulta.medico = medico; // se quiser vincular ao objeto consulta
     this.modalRef.close();
   }
 }

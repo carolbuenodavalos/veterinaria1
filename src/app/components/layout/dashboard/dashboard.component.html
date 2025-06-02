@@ -1,17 +1,61 @@
 <div class="container mt-4">
-    <h3 class="mb-4">Dashboard Veterinário</h3>
-    
-    <div class="row">
-      @for (card of cards; track $index) {
-        <div class="col-md-4 mb-4">
-          <div class="card h-100">
-            <div class="card-body text-center">
-              <i class="fas {{card.icon}} fa-3x mb-3 text-primary"></i>
-              <h5>{{card.title}}</h5>
-              <h2>{{card.value}}</h2>
-            </div>
-          </div>
+  <!-- ADMIN vê só seus cards -->
+  <div class="row" *ngIf="loginService.hasRole('ROLE_ADMIN')">
+    <div class="col-md-4" *ngFor="let card of adminCards">
+      <div class="card mb-3 shadow">
+        <div class="card-body text-center">
+          <i class="fas" [ngClass]="card.icon" style="font-size: 2rem;"></i>
+          <h5 class="card-title mt-2">{{card.title}}</h5>
+          <p class="card-text">{{card.value}}</p>
         </div>
-      }
+      </div>
     </div>
   </div>
+
+  <!-- VETERINARIO vê só os deles -->
+  <div class="row" *ngIf="loginService.hasRole('ROLE_VETERINARIO')">
+    <div class="col-md-4" *ngFor="let card of veterinarioCards">
+      <div class="card mb-3 shadow">
+        <div class="card-body text-center">
+          <i class="fas" [ngClass]="card.icon" style="font-size: 2rem;"></i>
+          <h5 class="card-title mt-2">{{card.title}}</h5>
+          <p class="card-text">{{card.value}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Próximas Consultas do Médico -->
+  <div class="row mt-4" *ngIf="loginService.hasRole('ROLE_VETERINARIO')">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header">
+          <i class="fas fa-calendar-check"></i> Próximas Consultas
+        </div>
+        <div class="card-body p-0">
+          <table class="table table-sm mb-0">
+            <thead>
+              <tr>
+                <th>Data</th>
+                <th>Animal</th>
+                <th>Tutor</th>
+                <th>Descrição</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let consulta of proximasConsultas">
+                <td>{{ consulta.dataHora | date:'short' }}</td>
+                <td>{{ consulta.animal?.nome }}</td>
+                <td>{{ consulta.animal?.tutor?.nome }}</td>
+                <td>{{ consulta.descricao }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div *ngIf="proximasConsultas.length === 0" class="text-center text-muted p-3">
+            Nenhuma consulta agendada.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

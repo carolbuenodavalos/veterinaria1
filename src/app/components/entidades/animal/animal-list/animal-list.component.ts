@@ -18,15 +18,14 @@ export class AnimalListComponent {
   pesquisa: string = "";
   animalEdit!: Animal;
 
-  @Input("modoModal") modoModal: boolean = false;
-  @Output("meuEvento") meuEvento = new EventEmitter();
-  animalService = inject(AnimalService);
-  
+  @Input() modoModal = false;
+  @Output() meuEvento = new EventEmitter<Animal>();
+
   @ViewChild("modalAnimalForm") modalAnimalForm!: TemplateRef<any>;
   modalService = inject(MdbModalService);
   modalRef!: MdbModalRef<any>;
 
-  constructor() {
+  constructor(private animalService: AnimalService) {
     this.findAll();
   }
 
@@ -86,5 +85,9 @@ export class AnimalListComponent {
   meuEventoTratamento(mensagem: any) {
     this.findAll();
     this.modalRef.close();
+  }
+
+  selecionarAnimal(animal: Animal) {
+    this.meuEvento.emit(animal);
   }
 }

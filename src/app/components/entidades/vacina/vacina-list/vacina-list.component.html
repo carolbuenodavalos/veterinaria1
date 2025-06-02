@@ -16,9 +16,11 @@
                         </div>
                         <div class="col-6">
                             <div class="alinharADireita">
+                                @if(!modoModal) {
                                 <a (click)="new()" class="btn btn-success btn-rounded" mdbRippled>
                                     <i class="fas fa-plus fa-sm"></i> Novo
                                 </a>
+                                }
                             </div>
                         </div>
                     </div>
@@ -29,7 +31,7 @@
                                 <th scope="col">ID</th>
                                 <th scope="col">NOME</th>
                                 <th scope="col">LOTE</th>
-                                <th scope="col">DATA APLICAÇÃO</th>
+                                <th scope="col">DATA VALIDADE</th>
                                 <th scope="col"></th>
                             </tr>
                         </thead>
@@ -39,14 +41,18 @@
                                 <td>{{vacina.id}}</td>
                                 <td>{{vacina.nome}}</td>
                                 <td>{{vacina.lote}}</td>
-                                <td>{{vacina.dataAplicacao | date:'dd/MM/yyyy'}}</td>
+                                <td>{{vacina.dataValidade | date:'dd/MM/yyyy'}}</td>
                                 <td class="alinharADireita">
+                                    @if(modoModal) {
+                                    <button class="btn btn-primary btn-sm" (click)="selecionarVacina(vacina)">Selecionar</button>
+                                    } @else {
                                     <a (click)="edit(vacina)" class="btn btn-primary btn-rounded" mdbRippled>
                                         <i class="fas fa-pencil fa-sm"></i>
                                     </a>
                                     <button (click)="delete(vacina)" class="btn btn-danger btn-rounded" mdbRippled>
                                         <i class="fas fa-trash fa-sm"></i>
                                     </button>
+                                    }
                                 </td>
                             </tr>
                             }
@@ -57,6 +63,8 @@
         </div>
     </div>
 </div>
+
+
 
 <ng-template #modalVacinaForm>
     <div class="modal-header">
@@ -70,4 +78,7 @@
     <div class="modal-body">
         <app-vacina-form [vacina]="vacinaEdit" (meuEvento)="meuEventoTratamento($event)"></app-vacina-form>
     </div>
+
+
+    
 </ng-template>

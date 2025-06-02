@@ -40,7 +40,7 @@ export class LoginComponent {
         else if (this.loginService.hasRole("ROLE_ADMIN")) {
           // Admin NÃO pode acessar consultas
           this.gerarToast().fire({ icon: "success", title: "Seja bem-vindo!" });
-          this.router.navigate(['admin/tutores']);
+          this.router.navigate(['admin/dashboard']);
         }
         else {
           Swal.fire('Você não tem permissão para acessar essa página!', '', 'error');

@@ -14,9 +14,14 @@ import { RouterModule } from '@angular/router';
 export class MenuComponent {
   loginService = inject(LoginService);
 
-  @ViewChild('modalAltera') modalAltera!: TemplateRef<any>; //referência ao template da modal
-  modalService = inject(MdbModalService); //para abrir a modal
-  modalRef!: MdbModalRef<any>; //vc conseguir fechar a modal depois
+  @ViewChild('modalAltera') modalAltera!: TemplateRef<any>; 
+  modalService = inject(MdbModalService); 
+  modalRef!: MdbModalRef<any>; 
+
+  consultas: any[] = [];
+  loadingMinhasConsultas = false;
+  erroMinhasConsultas = '';
+
 
   modalAlterarSenha() {
     this.modalRef = this.modalService.open(this.modalAltera);
@@ -25,5 +30,6 @@ export class MenuComponent {
   meuEventoTratamento(usuario: any) {
     this.modalRef.close();
   }
+  
   
 }

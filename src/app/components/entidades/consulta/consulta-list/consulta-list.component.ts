@@ -17,7 +17,7 @@ import { MedicosListComponent } from '../../medico/medico-list/medico-list.compo
   styleUrl: './consulta-list.component.scss',
 })
 export class ConsultaListComponent {
-  lista: Consulta[] = [];
+  consultas: any[] = [];
   pesquisa: string = "";
   consultaEdit!: Consulta;
 
@@ -31,10 +31,17 @@ export class ConsultaListComponent {
     this.findAll();
   }
 
+  ngOnInit() {
+    this.consultaService.findAll().subscribe({
+      next: (lista) => this.consultas = lista,
+      error: (erro) => { /* tratamento de erro */ }
+    });
+  }
+
   findAll() {
     this.consultaService.findAll().subscribe({
       next: (listaRetornada) => {
-        this.lista = listaRetornada;
+        this.consultas = listaRetornada;
       },
       error: (erro) => {
         Swal.fire(erro.error, '', 'error');
@@ -66,7 +73,7 @@ export class ConsultaListComponent {
   findByDescricao() {
     this.consultaService.findByDescricao(this.pesquisa).subscribe({
       next: (lista) => {
-        this.lista = lista;
+        this.consultas = lista;
       },
       error: (erro) => {
         Swal.fire(erro.error, '', 'error');

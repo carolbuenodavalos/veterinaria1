@@ -4,7 +4,7 @@ import { Animal } from '../../../../models/animal';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AnimalService } from '../../../../services/animal';
-import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
+import { MdbModalService, MdbModalRef } from 'mdb-angular-ui-kit/modal';
 import { Tutor } from '../../../../models/tutor';
 import { TutorService } from '../../../../services/tutor';
 import Swal from 'sweetalert2';
@@ -33,6 +33,7 @@ export class AnimalFormComponent {
   listaTutores!: Tutor[];
   listaMedicos!: Medico[];
   listaVacinas!: Vacina[];
+  listaAnimais!: Animal[];
 
   rotaAtiva = inject(ActivatedRoute);
   roteador = inject(Router);
@@ -44,8 +45,12 @@ export class AnimalFormComponent {
   @ViewChild("modalTutoresList") modalTutoresList!: TemplateRef<any>;
   @ViewChild("modalMedicosList") modalMedicosList!: TemplateRef<any>;
   @ViewChild("modalVacinasList") modalVacinasList!: TemplateRef<any>;
+  @ViewChild("modalAnimaisList") modalAnimaisList!: TemplateRef<any>;
   modalService = inject(MdbModalService);
   modalRef!: MdbModalRef<any>;
+
+  medicoSelecionado?: Medico;
+  tutorSelecionado?: Tutor;
 
   constructor() {
     let id = this.rotaAtiva.snapshot.params['id'];
@@ -55,6 +60,7 @@ export class AnimalFormComponent {
     this.findAllTutores();
     this.findAllMedicos();
     this.findAllVacinas();
+    this.findAllAnimais();
   }
 
   findById(id: number) {
@@ -127,6 +133,17 @@ export class AnimalFormComponent {
     });
   }
 
+  findAllAnimais() {
+    this.animalService.findAll().subscribe({
+      next: (lista) => {
+        this.listaAnimais = lista;
+      },
+      error: (erro) => {
+        Swal.fire(erro.error, '', 'error');
+      }
+    });
+  }
+
   compareId(a: any, b: any) {
     return a && b ? a.id === b.id : a === b;
   }
@@ -143,6 +160,10 @@ export class AnimalFormComponent {
     this.modalRef = this.modalService.open(this.modalVacinasList, { modalClass: 'modal-xl' });
   }
 
+  buscarAnimais() {
+    this.modalRef = this.modalService.open(this.modalAnimaisList, { modalClass: 'modal-xl' });
+  }
+
   deletarMedico(medico: Medico) {
     let indice = this.animal.medicos.findIndex(x => x.id == medico.id);
     this.animal.medicos.splice(indice, 1);
@@ -153,20 +174,48 @@ export class AnimalFormComponent {
     this.animal.vacinas.splice(indice, 1);
   }
 
+  abrirModalMedicos() {
+    this.medicoService.findAll().subscribe({
+      next: (lista) => {
+        this.listaMedicos = lista;
+        this.modalRef = this.modalService.open(this.modalMedicosList);
+      }
+    });
+  }
+
+  abrirModalMedicosList() {
+    this.modalRef = this.modalService.open(this.modalMedicosList);
+  }
+
+  abrirModalTutoresList() {
+    this.modalRef = this.modalService.open(this.modalTutoresList);
+  }
+
+  selecionarMedico(medico: Medico) {
+    this.medicoSelecionado = medico;
+    this.modalRef.close();
+  }
+
   meuEventoTratamentoTutor(tutor: Tutor) {
-    this.animal.tutor = tutor;
+    this.tutorSelecionado = tutor;
+    this.animal.tutor = tutor; // vincula ao animal
     this.modalRef.close();
   }
 
   meuEventoTratamentoMedico(medico: Medico) {
-    if (!this.animal.medicos) this.animal.medicos = [];
-    this.animal.medicos.push(medico);
+    this.animal.medicos = [medico]; // ou adicione à lista, conforme sua lógica
+    this.medicoSelecionado = medico;
     this.modalRef.close();
   }
 
   meuEventoTratamentoVacina(vacina: Vacina) {
     if (!this.animal.vacinas) this.animal.vacinas = [];
     this.animal.vacinas.push(vacina);
+    this.modalRef.close();
+  }
+
+  meuEventoTratamentoAnimal(animal: Animal) {
+    this.animal = animal;
     this.modalRef.close();
   }
 }

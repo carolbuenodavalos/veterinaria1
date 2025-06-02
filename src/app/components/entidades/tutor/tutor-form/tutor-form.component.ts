@@ -5,11 +5,12 @@ import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { TutorService } from '../../../../services/tutor';
 import Swal from 'sweetalert2';
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 
 @Component({
   selector: 'app-tutor-form',
   standalone: true,
-  imports: [MdbFormsModule, FormsModule],
+  imports: [MdbFormsModule, FormsModule, NgxMaskDirective],
   templateUrl: './tutor-form.component.html',
   styleUrl: './tutor-form.component.scss'
 })

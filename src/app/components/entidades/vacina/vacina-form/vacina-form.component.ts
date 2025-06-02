@@ -6,40 +6,27 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { VacinaService } from '../../../../services/vacina';
 import { MdbModalRef, MdbModalService } from 'mdb-angular-ui-kit/modal';
 import { Animal } from '../../../../models/animal';
-import { AnimalService } from '../../../../services/animal';
-import { AnimalListComponent } from '../../animal/animal-list/animal-list.component';
 import Swal from 'sweetalert2';
+import { CommonModule } from '@angular/common';
+import { NgxMaskDirective } from 'ngx-mask';
+import { AnimalListComponent } from "../../animal/animal-list/animal-list.component";
+
 
 @Component({
   selector: 'app-vacina-form',
   standalone: true,
-  imports: [AnimalListComponent, MdbFormsModule, FormsModule],
+  imports: [CommonModule, MdbFormsModule, FormsModule, NgxMaskDirective], // Remova AnimalListComponent
   templateUrl: './vacina-form.component.html',
-  styleUrl: './vacina-form.component.scss'
+  styleUrls: ['./vacina-form.component.scss']
 })
 export class VacinaFormComponent {
   @Input("vacina") vacina: Vacina = new Vacina();
   @Output("meuEvento") meuEvento = new EventEmitter();
 
-  listaAnimais!: Animal[];
-
   rotaAtiva = inject(ActivatedRoute);
   roteador = inject(Router);
   vacinaService = inject(VacinaService);
-  animalService = inject(AnimalService);
-
-  @ViewChild("modalAnimaisList") modalAnimaisList!: TemplateRef<any>;
-  modalService = inject(MdbModalService);
-  modalRef!: MdbModalRef<any>;
-
-  constructor() {
-    let id = this.rotaAtiva.snapshot.params['id'];
-    if (id) {
-      this.findById(id);
-    }
-    this.findAllAnimais();
-  }
-
+  
   findById(id: number) {
     this.vacinaService.findById(id).subscribe({
       next: (vacina) => {
@@ -77,33 +64,10 @@ export class VacinaFormComponent {
     }
   }
 
-  findAllAnimais() {
-    this.animalService.findAll().subscribe({
-      next: (lista) => {
-        this.listaAnimais = lista;
-      },
-      error: (erro) => {
-        Swal.fire(erro.error, '', 'error');
-      }
-    });
-  }
 
   compareId(a: any, b: any) {
     return a && b ? a.id === b.id : a === b;
   }
 
-  buscarAnimal() {
-    this.modalRef = this.modalService.open(this.modalAnimaisList, { modalClass: 'modal-xl' });
-  }
-
-  meuEventoTratamentoAnimal(animal: Animal) {
-    if (!this.vacina.animais) this.vacina.animais = [];
-    this.vacina.animais.push(animal);
-    this.modalRef.close();
-  }
-
-  deletarAnimal(animal: Animal) {
-    let indice = this.vacina.animais.findIndex(x => x.id == animal.id);
-    this.vacina.animais.splice(indice, 1);
-  }
 }
+

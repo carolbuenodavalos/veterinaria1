@@ -35,13 +35,12 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @for (consulta of lista; track $index) {
-                            <tr>
-                                <td>{{consulta.id}}</td>
-                                <td>{{consulta.dataHora | date:'dd/MM/yyyy HH:mm'}}</td>
-                                <td>{{consulta.animal?.nome}}</td>
-                                <td>{{consulta.medico?.nome}}</td>
-                                <td>{{consulta.status}}</td>
+                            <tr *ngFor="let consulta of consultas">
+                                <td>{{ consulta.id }}</td>
+                                <td>{{ consulta.dataHora | date:'dd/MM/yyyy HH:mm' }}</td>
+                                <td>{{ consulta.animal?.nome }}</td>
+                                <td>{{ consulta.medico?.nome }}</td>
+                                <td>{{ consulta.status }}</td>
                                 <td class="alinharADireita">
                                     <a (click)="edit(consulta)" class="btn btn-primary btn-rounded" mdbRippled>
                                         <i class="fas fa-pencil fa-sm"></i>
@@ -51,7 +50,6 @@
                                     </button>
                                 </td>
                             </tr>
-                            }
                         </tbody>
                     </table>
                 </div>

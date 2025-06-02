@@ -1,20 +1,22 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, Input, Output, EventEmitter } from '@angular/core';
 import { MdbFormsModule } from 'mdb-angular-ui-kit/forms';
 import { Medico } from '../../../../models/medico';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { MedicoService } from '../../../../services/medico';
+import { NgxMaskDirective, NgxMaskPipe } from 'ngx-mask';
 import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-medico-form',
   standalone: true,
-  imports: [MdbFormsModule, FormsModule],
+  imports: [MdbFormsModule, FormsModule, NgxMaskDirective, NgxMaskPipe] ,
   templateUrl: './medico-form.component.html',
   styleUrl: './medico-form.component.scss'
 })
 export class MedicoFormComponent {
-  medico: Medico = new Medico();
+  @Input() medico: Medico = new Medico();
+  @Output() meuEvento = new EventEmitter<Medico>(); // <-- Adicione isso
 
   rotaAtiva = inject(ActivatedRoute);
   roteador = inject(Router);
@@ -43,7 +45,7 @@ export class MedicoFormComponent {
       this.medicoService.update(this.medico, this.medico.id!).subscribe({
         next: (mensagem) => {
           Swal.fire(mensagem, '', 'success');
-          this.roteador.navigate(['admin/medicos']);
+          this.meuEvento.emit(this.medico); // envia o médico salvo
         },
         error: (erro) => {
           Swal.fire(erro.error, '', 'error');
@@ -53,7 +55,7 @@ export class MedicoFormComponent {
       this.medicoService.save(this.medico).subscribe({
         next: (mensagem) => {
           Swal.fire(mensagem, '', 'success');
-          this.roteador.navigate(['admin/medicos']);
+          this.meuEvento.emit(this.medico); // envia o médico salvo
         },
         error: (erro) => {
           Swal.fire(erro.error, '', 'error');

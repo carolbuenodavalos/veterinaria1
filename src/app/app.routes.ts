@@ -21,7 +21,8 @@ export const routes: Routes = [
     { 
         path: "admin", 
         component: PrincipalComponent, canActivate:[loginGuard], children: [
-                 { path: "", redirectTo: "dashboard", pathMatch: "full"},            {path: "dashboard", component: DashboardComponent},
+                 { path: "", redirectTo: "dashboard", pathMatch: "full"},            
+                 {path: "dashboard", component: DashboardComponent},
             { path: "menu", component: MenuComponent },
             { path: "animais", component: AnimalListComponent },
             { path: "animais/new", component: AnimalFormComponent },

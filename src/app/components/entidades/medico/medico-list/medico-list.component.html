@@ -16,9 +16,11 @@
                         </div>
                         <div class="col-6">
                             <div class="alinharADireita">
+                              @if(!modoModal) {
                                 <a (click)="new()" class="btn btn-success btn-rounded" mdbRippled>
-                                    <i class="fas fa-plus fa-sm"></i> Novo
+                                  <i class="fas fa-plus fa-sm"></i> Novo
                                 </a>
+                              }
                             </div>
                         </div>
                     </div>
@@ -41,12 +43,16 @@
                                 <td>{{medico.numeroCrm}}</td>
                                 <td>{{medico.especialidade}}</td>
                                 <td class="alinharADireita">
+                                  @if(modoModal) {
+                                    <button class="btn btn-primary btn-sm" (click)="selecionarMedico(medico)">Selecionar</button>
+                                  } @else {
                                     <a (click)="edit(medico)" class="btn btn-primary btn-rounded" mdbRippled>
-                                        <i class="fas fa-pencil fa-sm"></i>
+                                      <i class="fas fa-pencil fa-sm"></i>
                                     </a>
                                     <button (click)="delete(medico)" class="btn btn-danger btn-rounded" mdbRippled>
-                                        <i class="fas fa-trash fa-sm"></i>
+                                      <i class="fas fa-trash fa-sm"></i>
                                     </button>
+                                  }
                                 </td>
                             </tr>
                             }
@@ -57,4 +63,20 @@
         </div>
     </div>
 </div>
+
+<ng-template #modalMedicoForm>
+  <div class="modal-header">
+    <h5 class="modal-title">
+      @if(medicoEdit.id > 0) {
+        Editar Médico
+      } @else {
+        Novo Médico
+      }
+    </h5>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modalRef.close()"></button>
+  </div>
+  <div class="modal-body">
+    <app-medico-form [medico]="medicoEdit" (meuEvento)="meuEventoTratamento($event)"></app-medico-form>
+  </div>
+</ng-template>
 
